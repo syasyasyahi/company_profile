@@ -1,37 +1,39 @@
 @extends('admin.app')
-@section('title', 'About Menu')
+@section('title', 'Guide Menu')
 @section('content')
     <div class="table-responsive">
         <div class="d-flex justify-content-end">
-            <a href="{{ route('aboutadmin.create') }}" class="btn btn-info my-2">ADD</a>
+            <a href="{{ route('guideadmin.create') }}" class="btn btn-info my-2">ADD</a>
         </div>
         <table class="table table-bordered text-center">
             <thead>
                 <tr>
-                    <th>No</th>
+                    <th>Num</th>
                     <th>Image</th>
-                    <th>Title</th>
-                    <th>Features</th>
+                    <th>Name</th>
+                    <th>Expertise</th>
+                    <th>Social Media</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            @foreach ($abouts as $index => $item)
+            @foreach ($guides as $index => $item)
                 <tbody>
                     {{-- @foreach ($homes as $index => $v) --}}
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td><img src="{{ asset('storage/' . $item->image) }}" alt="" width="120"></td>
-                        <td>{{ $item->title }}</td>
+                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->expertise }}</td>
                         <td>
                             <ul>
-                                @foreach ($item->features as $i)
+                                @foreach ($item->social_media as $i)
                                     <li>{{ $i }}</li>
                                 @endforeach
                             </ul>
                         </td>
                         <td>
-                            <a href="{{ route('aboutadmin.edit', $item->id) }}" class="btn btn-success">Edit</a>
-                            <form class="d-inline" action="{{ route('aboutadmin.destroy', $item->id) }}" method="post"
+                            <a href="{{ route('guideadmin.edit', $item->id) }}" class="btn btn-success">Edit</a>
+                            <form class="d-inline" action="{{ route('guideadmin.destroy', $item->id) }}" method="post"
                                 onsubmit="return confirm('Are you sure you want to delete?')">
                                 @csrf
                                 @method('DELETE')

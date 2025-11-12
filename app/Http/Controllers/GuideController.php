@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Home;
+use App\Models\Guide;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
-class HomeController extends Controller
+class GuideController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $homes = Home::orderBy('id', 'DESC')->get();
-        return view('admin.home.index', compact('homes'));
+        $guides = Guide::orderBy('id', 'DESC')->get();
+        return view('admin.guide.index', compact('guides'));
     }
 
     /**
@@ -23,7 +22,7 @@ class HomeController extends Controller
      */
     public function create()
     {
-        return view('admin.home.create');
+        return view('admin.guide.create');
     }
 
     /**
@@ -34,9 +33,9 @@ class HomeController extends Controller
         try {
             $validasi = $request->validate([
                 'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
-                'subtitle' => 'required|string',
-                'title' => 'required|string',
-                'description' => 'required|string'
+                'name' => 'required|string',
+                'expertise' => 'required|string',
+                'social_media' => 'required|string'
             ]);
 
             if ($request->hasFile('image')) {
@@ -45,8 +44,16 @@ class HomeController extends Controller
                 $path = $file->storeAs('uploads/home', $filename, 'public');
                 $validasi['image'] = $path;
             }
-            Home::create($validasi);
-            return redirect()->route('homeadmin.index');
+
+
+            $social_media = [];
+            if ($request->social_media) {
+                $social_media = array_map('trim', explode(',', $request->social_media));
+            }
+            $validasi['social_media'] = $social_media;
+
+            Guide::create($validasi);
+            return redirect()->route('guideadmin.index');
         } catch (\Exception $th) {
             return back()->withErrors(['error' => 'There is an error' . $th->getMessage()]);
         }
@@ -65,8 +72,7 @@ class HomeController extends Controller
      */
     public function edit(string $id)
     {
-        $home = Home::find($id);
-        return view('admin.home.edit', compact('home'));
+        //
     }
 
     /**
@@ -75,28 +81,28 @@ class HomeController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $home = Home::find($id);
+            $guide = Guide::find($id);
             $validasi = $request->validate([
                 'image' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-                'subtitle' => 'required|string',
-                'title' => 'required|string',
-                'description' => 'required|string'
+                'name' => 'required|string',
+                'expertise' => 'required|string',
+                'social_media' => 'required|json'
             ]);
             if ($request->hasFile('image')) {
                 // Delete syntax when there is image available
-                if ($home->image && Storage::disk('public')->exists($home->image)) {
-                    Storage::disk('public')->delete($home->image);
+                if ($guide->image && Storage::disk('public')->exists($guide->image)) {
+                    Storage::disk('public')->delete($guide->image);
                 }
                 // Upload new image
                 $file = $request->file('image');
                 $filename = time() . '_' . $file->getClientOriginalName();
-                $path = $file->storeAs('uploads/home', $filename, 'public');
+                $path = $file->storeAs('uploads/guide', $filename, 'public');
                 $validasi['image'] = $path;
             } else {
                 // If it doesnt need to be changed, then the old image will still be saved
-                $validasi['image'] = $home->image;
+                $validasi['image'] = $guide->image;
             }
-            $home->update($validasi);
+            $guide->update($validasi);
             return redirect()->route('homeadmin.index');
         } catch (\Exception $th) {
             return back()->withErrors(['error' => 'There is something wrong' . $th->getMessage()]);
@@ -108,12 +114,12 @@ class HomeController extends Controller
      */
     public function destroy(string $id)
     {
-        $home = Home::find($id);
-        if ($home->image && Storage::disk('public')->exists($home->image)) {
-            Storage::disk('public')->delete($home->image);
+        $guide = Guide::find($id);
+        if ($guide->image && Storage::disk('public')->exists($guide->image)) {
+            Storage::disk('public')->delete($guide->image);
         }
-        $home->delete();
+        $guide->delete();
 
-        return redirect()->route('homeadmin.index');
+        return redirect()->route('guideadmin.index');
     }
 }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\GuideController;
+use App\Models\About;
 use App\Models\Home;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -10,7 +13,8 @@ Route::get('/', function () {
 })->name('home.index');
 
 Route::get('about', function () {
-    return view('compro.about');
+    $about = About::orderBy('id', 'DESC')->first();
+    return view('compro.about', compact('about'));
 })->name('about.index');
 
 Route::get('courses', function () {
@@ -43,5 +47,7 @@ Route::post('homeadmin/store', [HomeController::class, 'store'])->name('homeadmi
 Route::get('homeadmin/edit/{id}', [HomeController::class,'edit'])->name('homeadmin.edit');
 Route::put('homeadmin/update/{id}',[HomeController::class, 'update'])->name('homeadmin.update');
 Route::delete('homeadmin/destroy/{id}', [HomeController::class, 'destroy'])->name('homeadmin.destroy');
-Route::resource('aboutadmin', \App\Http\Controllers\AboutController::class);
-
+Route::resource('aboutadmin', AboutController::class);
+Route::delete('aboutadmin/destroy/{id}', [AboutController::class, 'destroy'])->name('aboutadmin.destroy');
+Route::resource('guideadmin', GuideController::class);
+Route::delete('guideadmin/destroy/{id}', [GuideController::class, 'destroy'])->name('guideadmin.destroy');

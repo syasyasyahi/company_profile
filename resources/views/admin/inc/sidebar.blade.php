@@ -78,13 +78,13 @@
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="{{route('aboutadmin.index')}}" class="menu-link">
+                            <a href="{{ route('aboutadmin.index') }}" class="menu-link">
                                 <div data-i18n="Without navbar">About menu</div>
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="layouts-container.html" class="menu-link">
-                                <div data-i18n="Container">Container</div>
+                            <a href="{{ route('guideadmin.index') }}" class="menu-link">
+                                <div data-i18n="Container">Guide Menu</div>
                             </a>
                         </li>
                         <li class="menu-item">

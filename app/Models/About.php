@@ -12,4 +12,6 @@ class About extends Model
          'description',
          'features'
     ];
+
+    protected $casts = ['features' => 'array'];
 }
