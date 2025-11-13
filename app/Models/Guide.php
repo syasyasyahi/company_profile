@@ -10,9 +10,10 @@ class Guide extends Model
         'image',
         'name',
         'expertise',
-        'social_media'
+        'social_media',
+        'socmed_urls'
     ];
 
-    protected $casts = ['social_media' => 'array'];
+    protected $casts = ['social_media' => 'array', 'socmed_urls' => 'array'];
 
 }

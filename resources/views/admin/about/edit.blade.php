@@ -29,6 +29,6 @@
             <input type="text" class="form-control" name="description" rows="5" cols="30" value="{{$about->description}}">
         </div>
         <button type="submit" class="btn btn-info">Edit</button>
-        <a href="{{ url('aboutadmin') }}" class="btn btn-secondary">BACK</a>
+        <a href="{{ url('guideadmin') }}" class="btn btn-secondary">BACK</a>
     </form>
 @endsection

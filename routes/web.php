@@ -3,6 +3,7 @@
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\GuideController;
 use App\Models\About;
+use App\Models\Guide;
 use App\Models\Home;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -14,7 +15,8 @@ Route::get('/', function () {
 
 Route::get('about', function () {
     $about = About::orderBy('id', 'DESC')->first();
-    return view('compro.about', compact('about'));
+    $guides = Guide::orderBy('id', 'DESC')->get();
+    return view('compro.about', compact('about', 'guides'));
 })->name('about.index');
 
 Route::get('courses', function () {

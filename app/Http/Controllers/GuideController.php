@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Guide;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class GuideController extends Controller
 {
@@ -35,22 +36,28 @@ class GuideController extends Controller
                 'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
                 'name' => 'required|string',
                 'expertise' => 'required|string',
-                'social_media' => 'required|string'
+                'social_media' => 'required|string',
+                'socmed_urls' => 'required|string'
             ]);
 
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 $filename = time() . '_' . $file->getClientOriginalName();
-                $path = $file->storeAs('uploads/home', $filename, 'public');
+                $path = $file->storeAs('uploads/guide', $filename, 'public');
                 $validasi['image'] = $path;
             }
-
 
             $social_media = [];
             if ($request->social_media) {
                 $social_media = array_map('trim', explode(',', $request->social_media));
             }
             $validasi['social_media'] = $social_media;
+
+            $socmed_urls = [];
+            if ($request->socmed_urls) {
+                $socmed_urls = array_map('trim', explode(',', $request->socmed_urls));
+            }
+            $validasi['socmed_urls'] = $socmed_urls;
 
             Guide::create($validasi);
             return redirect()->route('guideadmin.index');
@@ -72,7 +79,8 @@ class GuideController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $guide = Guide::find($id);
+        return view('admin.guide.edit', compact('guide'));
     }
 
     /**
@@ -86,7 +94,9 @@ class GuideController extends Controller
                 'image' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
                 'name' => 'required|string',
                 'expertise' => 'required|string',
-                'social_media' => 'required|json'
+                'social_media' => 'required|string',
+                'socmed_urls' => 'required|string'
+
             ]);
             if ($request->hasFile('image')) {
                 // Delete syntax when there is image available
@@ -102,8 +112,22 @@ class GuideController extends Controller
                 // If it doesnt need to be changed, then the old image will still be saved
                 $validasi['image'] = $guide->image;
             }
+
+            $social_media = [];
+            if ($request->social_media) {
+                $social_media = array_map('trim', explode(',', $request->social_media));
+            }
+            $validasi['social_media'] = $social_media;
+
+            $socmed_urls = [];
+            if ($request->socmed_urls) {
+                $socmed_urls = array_map('trim', explode(',', $request->socmed_urls));
+            }
+            $validasi['socmed_urls'] = $socmed_urls;
+
+
             $guide->update($validasi);
-            return redirect()->route('homeadmin.index');
+            return redirect()->route('guideadmin.index');
         } catch (\Exception $th) {
             return back()->withErrors(['error' => 'There is something wrong' . $th->getMessage()]);
         }

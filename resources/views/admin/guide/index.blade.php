@@ -13,6 +13,7 @@
                     <th>Name</th>
                     <th>Expertise</th>
                     <th>Social Media</th>
+                    <th>Social Media Url</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -25,9 +26,23 @@
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->expertise }}</td>
                         <td>
+                            @if (is_array($item->social_media))
+                                <ul class="list-unstyled mb-0">
+                                    @foreach ($item->social_media as $link)
+                                        <li>{{ $link }}</li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <span class="text-muted">No social media</span>
+                            @endif
+                        </td>
+                        <td>
                             <ul>
-                                @foreach ($item->social_media as $i)
-                                    <li>{{ $i }}</li>
+                                @php
+                                    $guide_url = $item->socmed_urls ?? [];
+                                @endphp
+                                @foreach ($guide_url as $gd_url)
+                                    <li>{{ $gd_url }}</li>
                                 @endforeach
                             </ul>
                         </td>
