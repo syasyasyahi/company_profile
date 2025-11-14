@@ -37,7 +37,7 @@
 
   <body>
     <!-- Content -->
-
+{{-- @include('sweetalert::alert') --}}
     <div class="container-xxl">
       <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
@@ -148,6 +148,13 @@
                 </div>
                 <div class="mb-3">
                   <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                </div>
+                <div class="mb-3 text-center">
+                    <span>OR</span>
+                </div>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+                <div class="mb-3">
+                    <a href="{{ route('google-auth') }}" class="btn btn-primary d-grid w-100 d-flex align-items-center justify-content-center gap-2"><i class="bi bi-google"></i>Sign in with Google</a>
                 </div>
               </form>
 

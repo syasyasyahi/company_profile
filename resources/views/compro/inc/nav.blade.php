@@ -28,7 +28,7 @@
                 <a href="{{ route('contact.index') }}"
                     class="nav-item nav-link {{ Route::is('contact.index') ? 'active' : '' }}">Contact</a>
             </div>
-            <a href="{{ route('login.index') }}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Login Now<i
+            <a href="{{ route('login') }}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Login Now<i
                     class="fa fa-arrow-right ms-3"></i></a>
         </div>
     </nav>
